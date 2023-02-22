@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021-01-03 14:39:02.000.643,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021-01-17 10:38:19.000.233,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021-01-17 14:29:08.000.830,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021-03-18 16:34:31.000.196,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021-12-16 08:53:43.000.077,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022-10-02 10:26:31.000.327,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022-10-03 15:00:34.000.963,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022-10-03 15:08:14.000.930,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022-10-03 15:19:30.000.136,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022-10-03 19:47:01.000.495,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-02-21 16:47:28.000.822,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-02-21 16:48:26.000.145,=C:\Users\Administrator\Desktop\fasmtest\Fasm4Delphi.pas</Transaction>
+    <Transaction>2023-02-21 16:55:45.000.871,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Administrator\Desktop\fasmdlltest\Unit1.pas</Transaction>
+    <Transaction>2023-02-21 16:55:45.000.871,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Administrator\Desktop\fasmdlltest\Unit1.dfm</Transaction>
+    <Transaction>2023-02-21 16:55:47.000.091,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Administrator\Desktop\fasmdlltest\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

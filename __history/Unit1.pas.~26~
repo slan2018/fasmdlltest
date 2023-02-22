@@ -1,0 +1,162 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,Fasm4Delphi, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    btn1: TButton;
+    mmo1: TMemo;
+    btn2: TButton;
+    btn3: TButton;
+    mmo2: TMemo;
+    mmo3: TMemo;
+    pnl1: TPanel;
+    pnl2: TPanel;
+    pnl3: TPanel;
+    pnl4: TPanel;
+    pnl5: TPanel;
+    pnl6: TPanel;
+    pnl7: TPanel;
+    procedure FormCreate(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btn3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+const
+  CompliterMemSize=$10000;
+var
+  CompliterMem:PFASM_STATE;
+implementation
+
+{$R *.dfm}
+function HexStrToStr(const S:string):string;
+//16进制字符串转换成字符串
+var
+t:Integer;
+ts:string;
+M,Code:Integer;
+begin
+t:=1;
+Result:='';
+while t<=Length(S) do
+begin   //xlh 2006.10.21
+    while (t<=Length(S)) and (not (S[t] in ['0'..'9','A'..'F','a'..'f'])) do
+      inc(t);
+    if (t+1>Length(S))or(not (S[t+1] in ['0'..'9','A'..'F','a'..'f'])) then
+      ts:='$'+S[t]
+    else
+      ts:='$'+S[t]+S[t+1];
+    Val(ts,M,Code);
+    if Code=0 then
+      Result:=Result+Chr(M);
+    inc(t,2);
+end;
+end;
+
+function GetMemBytes(var X; size: Integer): string;
+var
+  pb: PByte;
+  i: Integer;
+begin
+  pb := PByte(X);
+  for i := 0 to size - 1 do
+  begin
+    //Result := Result + IntToHex(pb^, 2) + #32;
+    Result := Result + IntToHex(pb^, 2);
+    Inc(pb);
+  end;
+end; {GetMemBytes end}
+
+procedure TForm1.btn1Click(Sender: TObject);
+var
+  // mybytes:array[0..2] of byte;
+   str,pasm:pansichar;
+  // asm_str:string;
+begin
+str:='use32'+sLineBreak+ 'mov eax,edi'+sLineBreak+'mov ebx,ecx';
+  // asm_str:= mmo1.Lines.Text;
+   // pasm:=pansichar(asm_str);
+  // str:='use32'+sLineBreak;
+  // move(pasm[0],str[7],length(asm_str));
+//if fasm_Assemble('add eax,0',CompliterMem,CompliterMemSize)<>FASM_OK then
+//if fasm_Assemble('mov eax,edi',CompliterMem,CompliterMemSize)<>FASM_OK then
+  if fasm_Assemble(str,CompliterMem,CompliterMemSize)<>FASM_OK then
+begin
+  raise Exception.Create('Condition:    '+CompliterMem^.condition.ToString+sLineBreak+
+                         'Error Code:   '+CompliterMem^.error_code.ToString+sLineBreak);
+end;
+   showmessage( inttostr(CompliterMem.output_length));
+   showmessage( GetMemBytes(pansichar(CompliterMem.output_data),4) );
+end;
+
+procedure TForm1.btn3Click(Sender: TObject);
+var
+  lansistr:AnsiString;
+  pasm:PAnsiChar;
+  pb: PByte;
+  i: Integer;
+  result_str:string;
+  ddd:array[0..9] of Byte;
+  dddd:array of byte;
+  pid,PHandle:dword;
+  WriteCount:SIZE_T;
+  //str  :AnsiString;
+   str  :string;
+begin
+mmo2.Clear;
+mmo3.Clear;
+   lansistr:= 'use32'+sLineBreak+mmo1.Lines.Text;
+   pasm:=PAnsiChar(lansistr);
+if fasm_Assemble(pasm,CompliterMem,CompliterMemSize)<>FASM_OK then
+begin
+  raise Exception.Create('Condition:    '+(CompliterMem^.condition).ToString+sLineBreak+
+                         'Error Code:   '+CompliterMem^.error_code.ToString+sLineBreak+
+                         'error line:   '+(CompliterMem^.error_line.line_number-1).ToString+sLineBreak);
+end;
+  //showmessage('memo内容到HEX：' +GetMemBytes(pansichar(CompliterMem.output_data),CompliterMem.output_length) );
+   pb := PByte(pansichar(CompliterMem.output_data));
+   for i := 0 to CompliterMem.output_length - 1 do
+   begin
+    //Result := Result + IntToHex(pb^, 2) + #32;
+    result_str := result_str + IntToHex(pb^, 2)+#32;
+    Inc(pb);
+  end;
+  mmo2.Lines.Add(result_str) ;
+  setlength(dddd,CompliterMem.output_length);
+  pid:=GetCurrentProcessId();
+  PHandle := OpenProcess(PROCESS_ALL_ACCESS, False, pid);
+  readProcessMemory(PHandle,pansichar(CompliterMem.output_data), dddd, CompliterMem.output_length,WriteCount);
+   for i := 0 to length(dddd)-1 do
+   begin
+   if i=0 then
+     str:=str+'{' +dddd[i].ToString
+   else
+     str:=str+','+dddd[i].ToString ;
+  end;
+  str:=str+'}';
+  mmo3.Lines.Add(str) ;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+    LoadFASM('c:\FASM.DLL');
+    GetMem(CompliterMem,CompliterMemSize);
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  FreeFASM;
+end;
+
+end.
